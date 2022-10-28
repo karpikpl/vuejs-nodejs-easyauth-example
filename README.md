@@ -44,6 +44,28 @@ user.roles = claims.filter((c) => c.typ === "roles").reduce((acc, c) => { acc[c.
 console.log(req.user);
 ```
 
+## Roles
+Application can define granular roles for users to maintain different level of access.
+
+Roles have to be defined in AAD in the application registration.
+![Application Registration App Roles](./img/app-registration.png "Application Registration")
+
+Next users can be assigned to roles in AAD Enterprise Application.
+![Enterprise Application Users and Groups](./img/enterprise-application.png "Enterprise Application")
+
+When users signs in, roles are populated in claims.
+
+```json
+{
+    "typ": "roles",
+    "val": "User.Read"
+},
+{
+    "typ": "roles",
+    "val": "User.Write"
+}
+```
+
 ### External apps calling backend APIs
 When external application needs to call backend app, it needs to obtain a valid JWT token from AAD.
 
