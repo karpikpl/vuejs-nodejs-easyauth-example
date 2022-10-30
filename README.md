@@ -70,7 +70,10 @@ When users signs in, roles are populated in claims.
 When external application needs to call backend app, it needs to be granted API permissions first.
 
 External api will be called "some-other-api" in the screenshots below.
+
+[Assign roles to applications](https://learn.microsoft.com/en-us/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps#assign-app-roles-to-applications)
 ![API Permissions](./img/api-permissions.png "API Permissions")
+
 
 Once permissions are granted, secret needs to be added for service principal (some-other-api) to get the access token.
 ![API Secret](./img/api-secret.png "API Secret")
@@ -99,3 +102,14 @@ Make a call to Users API:
  ```json
 [{"id":"1","firstName":"first1","lastName":"last1","email":"abc@gmail.com"},{"id":"2","firstName":"first2","lastName":"last2","email":"abc@gmail.com"},{"id":"3","firstName":"first3","lastName":"last3","email":"abc@gmail.com"}]
 ```
+
+## Restricting access
+By default any application in the same active directory can request a token for Users API scope `e4e03cf2-6a67-444f-8eae-d34146c55a52/.default`.
+
+![Application id](./img/application-id.png "Application id")
+
+In order to limit access to the application only to identities with roles assigned, change app registration settings.
+
+[Easy Auth and the default scope](https://medium.com/airwalk/azure-app-service-easy-auth-and-the-default-scope-1fb0b65b4d26)
+
+![Assignment required](./img/assignment-required.png "App registration assignment required")
