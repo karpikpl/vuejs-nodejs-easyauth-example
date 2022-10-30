@@ -67,6 +67,35 @@ When users signs in, roles are populated in claims.
 ```
 
 ### External apps calling backend APIs
-When external application needs to call backend app, it needs to obtain a valid JWT token from AAD.
+When external application needs to call backend app, it needs to be granted API permissions first.
 
-todo: POC to be added to this repository
+External api will be called "some-other-api" in the screenshots below.
+![API Permissions](./img/api-permissions.png "API Permissions")
+
+Once permissions are granted, secret needs to be added for service principal (some-other-api) to get the access token.
+![API Secret](./img/api-secret.png "API Secret")
+
+To get the token:
+```bash
+curl -X POST -H 'Content-Type: application/x-www-form-urlencoded' \
+https://login.microsoftonline.com/8ace3cb7-5c52-4b89-ba78-31a116187fb6/oauth2/v2.0/token \
+-d 'client_id=b764391f-efcc-4733-b695-8f1bd821c794' \
+-d 'grant_type=client_credentials' \
+-d 'scope=e4e03cf2-6a67-444f-8eae-d34146c55a52/.default' \
+-d 'client_secret=xxxxx'
+```
+where:
+* 8ace3cb7-5c52-4b89-ba78-31a116187fb6 - replace with your Azure AD tenant id
+* client_id - is the application client_id of the service principal (some-other-api) requesting the token
+* scope - has the id of the resource being requested - API with users
+* client_secret - secret created for service principal (some-other-api)
+
+Make a call to Users API:
+```bash
+ curl https://vue-test-application.azurewebsites.net/api/users -H 'Authorization: Bearer <<ACCESS_TOKEN_FROM_AZURE_AD>>'
+ ```
+
+ response should be:
+ ```json
+[{"id":"1","firstName":"first1","lastName":"last1","email":"abc@gmail.com"},{"id":"2","firstName":"first2","lastName":"last2","email":"abc@gmail.com"},{"id":"3","firstName":"first3","lastName":"last3","email":"abc@gmail.com"}]
+```

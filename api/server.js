@@ -5,26 +5,9 @@ const app = express(),
 port = process.env.PORT || 3070;
 
 const authMiddleware = function authMiddleware(req, res, next) {
-  const token = req.header("authorization");
   const easyAuth = req.header("X-MS-CLIENT-PRINCIPAL"); // only app service can set this header
 
-  if (token) {
-    // verify token using MSAL or manual validation
-    // const jwt = require('jsonwebtoken');
-    // jwt.verify(token, process.env.TOKEN_SECRET as string, (err: any, user: any) => {
-    //   console.log(err)
-
-    //   if (err) return res.sendStatus(403)
-
-    //   req.user = user
-    // set roles
-    // req.user.roles = {..}
-
-    //   next()
-    // })
-    next();
-  }
-  else if (easyAuth) {
+ if (easyAuth) {
     let bufferObj = Buffer.from(easyAuth, "base64");
     let decodedString = bufferObj.toString("utf8");
     let easyAuthObj = JSON.parse(decodedString);
@@ -52,7 +35,7 @@ const authMiddleware = function authMiddleware(req, res, next) {
 };
 
 const canWriteUsers = function canWriteUsers(req, res, next) {
-  console.log("roles", req.user.roles);
+  console.log("roles", req.user && req.user.roles);
 
   if (req.user && req.user.roles["User.Write"]) {
     next();
@@ -63,7 +46,7 @@ const canWriteUsers = function canWriteUsers(req, res, next) {
 };
 
 const canReadUsers = function canReadUsers(req, res, next) {
-  console.log("roles", req.user.roles);
+  console.log("roles", req.user && req.user.roles);
 
   if (req.user && req.user.roles["User.Read"]) {
     next();
