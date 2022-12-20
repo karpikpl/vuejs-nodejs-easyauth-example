@@ -1,3 +1,4 @@
 node_modules
 dist
 api/api.zip
+api/server.bundle.js

@@ -1,5 +1,8 @@
 <template>
     <div class="container">
+        <div class="btn">
+            <button @click='displayUserInfo()' type="button" class="btn btn-warning">Get User Info</button>
+        </div>
         <div class="header">
             User Roles
         </div>
@@ -47,7 +50,7 @@ export default {
         }
     },
     methods: {
-        getUserInfo() {
+        displayUserInfo() {
             console.log("I am in getUserInfo!!!")
 
             getUserInfo().then(response => {
@@ -58,7 +61,7 @@ export default {
         }
     },
     mounted() {
-        this.getUserInfo();
+        this.displayUserInfo();
     }
 }
 </script>

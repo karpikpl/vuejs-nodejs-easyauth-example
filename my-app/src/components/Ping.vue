@@ -2,46 +2,41 @@
   <div class="hello">
     <Header />
     <div class="container mrgnbtm">
-      <div class="row">
-        <div class="col-md-8">
-          <CreateUser @createUser="userCreate($event)" />
-        </div>
-        <div class="col-md-4">
-          <DisplayBoard :numberOfUsers="numberOfUsers" @getAllUsers="getAllUsers()" />
-        </div>
-      </div>
+          <div class="row">
+            <div class="col-md-4">
+                <DisplayBoard :numberOfUsers="numberOfUsers" @getAllUsers="getAllUsers()" />
+            </div>
+          </div>
     </div>
     <div class="row mrgnbtm">
-      <Users v-if="users.length > 0" :users="users" />
+        <Users v-if="users.length > 0" :users="users" />
     </div>
     <div class="row mrgnbtm">
-      <UserInfo />
+        <UserInfo />
     </div>
   </div>
 </template>
 
 <script>
 import Header from './Header.vue'
-import CreateUser from './CreateUser.vue'
 import DisplayBoard from './DisplayBoard.vue'
 import Users from './Users.vue'
 import UserInfo from './UserInfo.vue'
-import { getAllUsers, createUser } from '../services/UserService'
+import { getAllUsers } from '../services/UserService'
 
 export default {
-  name: 'Dashboard',
+  name: 'Ping',
   components: {
     Header,
-    CreateUser,
     DisplayBoard,
     Users,
     UserInfo
   },
   data() {
-    return {
-      users: [],
-      numberOfUsers: 0
-    }
+      return {
+          users: [],
+          numberOfUsers: 0
+      }
   },
   methods: {
     getAllUsers() {
@@ -52,16 +47,9 @@ export default {
       }).catch(error => {
         console.log("Error fetching all user data", error)
       })
-    },
-    userCreate(data) {
-      console.log('data:::', data)
-      createUser(data).then(response => {
-        console.log(response);
-        this.getAllUsers();
-      });
     }
   },
-  mounted() {
+  mounted () {
     this.getAllUsers();
   }
 }
